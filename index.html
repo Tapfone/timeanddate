@@ -1,10 +1,68 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-    <title>Time & Date</title>
-    <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Time & Date</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    -webkit-tap-highlight-color:transparent;
+}
+
+html,
+body{
+    width:100%;
+    height:100%;
+    overflow:hidden;
+    background:#000;
+    color:#fff;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+body{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.container{
+    width:100%;
+    padding:20px;
+    text-align:center;
+}
+
+#time{
+    font-size:18vw;
+    font-weight:900;
+    line-height:1;
+    letter-spacing:2px;
+    margin-bottom:25px;
+    text-shadow:0 0 15px rgba(255,255,255,.15);
+}
+
+#date{
+    font-size:6vw;
+    font-weight:700;
+    opacity:.95;
+}
+
+@media (min-width:768px){
+
+    #time{
+        font-size:120px;
+    }
+
+    #date{
+        font-size:36px;
+    }
+
+}
+</style>
+
 </head>
 <body>
 
@@ -13,6 +71,42 @@
     <div id="date">Sunday, January 1, 2026</div>
 </div>
 
-<script src="script.js"></script>
+<script>
+function updateClock(){
+
+    const now = new Date();
+
+    // Time
+    let hours = now.getHours();
+    const minutes = String(now.getMinutes()).padStart(2,"0");
+    const seconds = String(now.getSeconds()).padStart(2,"0");
+
+    const ampm = hours >= 12 ? "PM" : "AM";
+
+    hours = hours % 12;
+    hours = hours ? hours : 12;
+
+    document.getElementById("time").textContent =
+        `${hours}:${minutes}:${seconds} ${ampm}`;
+
+    // Date
+    const options = {
+        weekday: "long",
+        month: "long",
+        day: "numeric",
+        year: "numeric"
+    };
+
+    document.getElementById("date").textContent =
+        now.toLocaleDateString("en-US", options);
+}
+
+// Initial load
+updateClock();
+
+// Update every second
+setInterval(updateClock, 1000);
+</script>
+
 </body>
 </html>
